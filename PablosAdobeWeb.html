@@ -2,8 +2,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0" />
-
-
+    
 <style>
     body{
         text-align: center;
@@ -30,7 +29,7 @@
        
     
        <iframe
-           src="https://new.express.adobe.com/embedLink/urn:aaid:sc:VA6C2:57ae3d84-d2e3-59fb-b3d9-28fc38341db9?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
+           src="https://express.adobe.com/embedLink/urn:aaid:sc:VA6C2:57ae3d84-d2e3-59fb-b3d9-28fc38341db9?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
            width="1280"
            height="600"
            style="
@@ -42,7 +41,10 @@
                transform-origin:center;">
                
        </iframe>
+       
     </div>
+    <button class="likeButtons">Like</button>
+    <span class="numLikes">0</span>
    </div>
    
     <h2>My 2nd Project: Video about My day</h2>
@@ -52,7 +54,7 @@
        
     
        <iframe
-           src="https://new.express.adobe.com/embedLink/urn:aaid:sc:VA6C2:e211138e-01c3-5637-bc88-0f7b5eb7876a?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
+           src="https://express.adobe.com/embedLink/urn:aaid:sc:VA6C2:e211138e-01c3-5637-bc88-0f7b5eb7876a?promoid=Y69SGM5H&sdid=C4SZ2FYJ&mv=other"
            width="1280"
            height="750"
            style="
@@ -65,10 +67,61 @@
                
        </iframe>
     </div>
+    <button class="likeButtons">Like</button>
+    <span class="numLikes">0</span>
    </div>
    
    
-    
-  
-</body>
+    <script type="module">
 
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+        
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDrMMd9JszYLqTJUY3jOTS1qU59IlnHFxs",
+          authDomain: "pablolikebuttons1.firebaseapp.com",
+          projectId: "pablolikebuttons1",
+          storageBucket: "pablolikebuttons1.firebasestorage.app",
+          messagingSenderId: "1003824692803",
+          appId: "1:1003824692803:web:44bff9428df07ac66a9ef6"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+      
+        
+    	const likeButtons = document.querySelectorAll(".likeButtons")
+    	const numLikes = document.querySelectorAll(".numLikes")
+
+    	for (let i=0; i<likeButtons.length; i++) {
+    		likeButtons[i].addEventListener('click', function(){ Like(i) })
+    		onValue(ref(db, "/project "+i+"/numLikes"), (snapshot) => {
+    			let data = snapshot.val();
+    			numLikes[i].innerHTML = data
+    		});
+            
+    	}
+
+    	function Like(i) {
+    		let numberLikes = parseInt(numLikes[i].innerHTML)
+    		numberLikes = numberLikes + 1
+    		set(ref(db, "project " + i), {
+    			numLikes: numberLikes,
+    		});
+    		
+    	}
+    </script>
+    
+    
+    
+    
+    
+    
+    
+</body>
